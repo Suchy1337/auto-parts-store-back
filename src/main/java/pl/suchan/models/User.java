@@ -1,12 +1,16 @@
 package pl.suchan.models;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
