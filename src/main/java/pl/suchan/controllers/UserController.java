@@ -3,24 +3,24 @@ package pl.suchan.controllers;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pl.suchan.models.User;
+import pl.suchan.DTOs.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import pl.suchan.repositories.UserRepository;
+import pl.suchan.services.UserService;
 
 @RestController
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public UserController(UserService userService){
+        this.userService = userService;
     }
 
     @PostMapping("/create-user")
     @ResponseBody
-    public void createUser(@RequestBody User user) {
-        userRepository.save(user);
+    public void addNewUser(@RequestBody UserDTO userDTO) {
+        userService.addNewUser(userDTO);
     }
 }
