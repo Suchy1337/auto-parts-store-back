@@ -1,17 +1,17 @@
-package pl.suchan.controllers;
+package pl.suchan.apstore.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pl.suchan.DTOs.UserDTO;
+import pl.suchan.apstore.DTOs.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import pl.suchan.exceptions.UserException;
-import pl.suchan.services.UserService;
+import pl.suchan.apstore.exceptions.UserRegistrationException;
+import pl.suchan.apstore.services.UserService;
 
-@RestController
+@RestController("/user")
 public class UserController {
 
     private final UserService userService;
@@ -21,15 +21,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/registration")
     @ResponseBody
     public ResponseEntity<String> addNewUser(@RequestBody UserDTO userDTO) {
         try{
             userService.addNewUser(userDTO);
             return new ResponseEntity<>("User created", HttpStatus.CREATED);
         }
-        catch(UserException userException){
-            return new ResponseEntity<>(userException.getMessage(), HttpStatus.CONFLICT);
+        catch(UserRegistrationException userRegistrationException){
+            return new ResponseEntity<>(userRegistrationException.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

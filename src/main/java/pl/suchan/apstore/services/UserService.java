@@ -1,11 +1,12 @@
-package pl.suchan.services;
+package pl.suchan.apstore.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.suchan.DTOs.UserDTO;
-import pl.suchan.exceptions.UserException;
-import pl.suchan.models.User;
-import pl.suchan.repositories.UserRepository;
+import pl.suchan.apstore.DTOs.UserDTO;
+import pl.suchan.apstore.enums.Role;
+import pl.suchan.apstore.exceptions.UserRegistrationException;
+import pl.suchan.apstore.models.User;
+import pl.suchan.apstore.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -16,12 +17,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(UserDTO userDTO) throws UserException {
+    public void addNewUser(UserDTO userDTO) throws UserRegistrationException {
         if(!checkIfUserExists(userDTO)){
-            userRepository.save(convertToDao(userDTO));
+            User convertedUser = convertToDao(userDTO);
+            convertedUser.setRole(Role.USER);
+            userRepository.save(convertedUser);
         }
         else{
-            throw new UserException("User already exists!");
+            throw new UserRegistrationException("User already exists!");
         }
     }
 

@@ -1,7 +1,7 @@
-package pl.suchan.repositories;
+package pl.suchan.apstore.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.suchan.models.User;
+import pl.suchan.apstore.models.User;
 
 import java.util.Optional;
 

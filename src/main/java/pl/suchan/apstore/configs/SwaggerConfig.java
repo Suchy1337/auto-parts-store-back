@@ -1,4 +1,4 @@
-package pl.suchan.configs;
+package pl.suchan.apstore.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
