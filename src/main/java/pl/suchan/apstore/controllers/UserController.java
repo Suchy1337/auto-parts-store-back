@@ -1,35 +1,29 @@
 package pl.suchan.apstore.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.suchan.apstore.DTOs.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import pl.suchan.apstore.exceptions.UserRegistrationException;
+import pl.suchan.apstore.models.User;
 import pl.suchan.apstore.services.UserService;
 
 @RestController("/user")
 public class UserController {
 
-    private final UserService userService;
-
     @Autowired
-    public UserController(UserService userService){
-        this.userService = userService;
+    private UserService userService;
+
+    @RequestMapping(value = "user", method = RequestMethod.POST)
+    public User createUser(@RequestBody UserDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 
-    @PostMapping("/registration")
-    @ResponseBody
-    public ResponseEntity<String> addNewUser(@RequestBody UserDTO userDTO) {
-        try{
-            userService.addNewUser(userDTO);
-            return new ResponseEntity<>("User created", HttpStatus.CREATED);
-        }
-        catch(UserRegistrationException userRegistrationException){
-            return new ResponseEntity<>(userRegistrationException.getMessage(), HttpStatus.CONFLICT);
-        }
+    @RequestMapping(value = "user", method = RequestMethod.GET)
+    public User getUser(@RequestBody UserDTO user){
+        return userService.findUserById(user.getId());
+    }
+
+    @RequestMapping(value = "user", method = RequestMethod.GET)
+    public User getUserByUsername(@RequestBody UserDTO user){
+        return userService.findUserByUsername(user.getUsername());
     }
 }

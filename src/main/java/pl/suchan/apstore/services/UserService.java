@@ -4,28 +4,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.suchan.apstore.DTOs.UserDTO;
 import pl.suchan.apstore.enums.Role;
-import pl.suchan.apstore.exceptions.UserRegistrationException;
 import pl.suchan.apstore.models.User;
 import pl.suchan.apstore.repositories.UserRepository;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+
 @Service
+@Transactional
 public class UserService {
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
-    public void addNewUser(UserDTO userDTO) throws UserRegistrationException {
+    public UserService(){}
+
+    public User createUser(UserDTO userDTO){
         if(!checkIfUserExists(userDTO)){
             User convertedUser = convertToDao(userDTO);
             convertedUser.setRole(Role.USER);
-            userRepository.save(convertedUser);
+            return userRepository.save(convertedUser);
         }
-        else{
-            throw new UserRegistrationException("User already exists!");
-        }
+        return null;
+    }
+
+    public User findUserById(long id){
+        Optional<User> foundUser = userRepository.findById(id);
+        return foundUser.orElse(null);
+    }
+
+    public User findUserByUsername(String username){
+        Optional<User> foundUser = userRepository.findByUsername(username);
+        return foundUser.orElse(null);
     }
 
     private boolean checkIfUserExists(UserDTO userDTO){
