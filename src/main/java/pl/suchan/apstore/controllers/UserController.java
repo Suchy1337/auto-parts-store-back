@@ -12,18 +12,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "user", method = RequestMethod.POST)
+    @PostMapping("/createUser")
+    @ResponseBody
     public User createUser(@RequestBody UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
 
-    @RequestMapping(value = "user", method = RequestMethod.GET)
-    public User getUser(@RequestBody UserDTO user){
-        return userService.findUserById(user.getId());
+    @GetMapping("/getUserById")
+    @ResponseBody
+    public User getUser(@RequestParam Long id){
+        return userService.findUserById(id);
     }
 
-    @RequestMapping(value = "user", method = RequestMethod.GET)
-    public User getUserByUsername(@RequestBody UserDTO user){
-        return userService.findUserByUsername(user.getUsername());
+    @GetMapping("/getUserByUsername")
+    @ResponseBody
+    public User getUser(@RequestParam String username){
+        return userService.findUserByUsername(username);
     }
 }
