@@ -16,11 +16,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserService(){}
-
     public User createUser(UserDTO userDTO){
+
         if(!checkIfUserExists(userDTO)){
-            User convertedUser = convertToDao(userDTO);
+            User convertedUser = convertToUser(userDTO);
             convertedUser.setRole(Role.USER);
             return userRepository.save(convertedUser);
         }
@@ -41,7 +40,7 @@ public class UserService {
         return userRepository.findByUsername(userDTO.getUsername()).isPresent();
     }
 
-    private User convertToDao(UserDTO userDTO){
+    private User convertToUser(UserDTO userDTO){
         User createdUser = new User();
         createdUser.setMailAddress(userDTO.getMailAddress());
         createdUser.setPassword(hashPassword(userDTO.getPassword()));
